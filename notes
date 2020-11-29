@@ -1,0 +1,8 @@
+dashboards
+https://grafana.com/grafana/dashboards/9701
+https://grafana.com/grafana/dashboards/13131
+
+exporters
+https://github.com/kumina/libvirt_exporter
+https://github.com/openstack-exporter/openstack-exporter
+https://github.com/rumanzo/libvirt_exporter_improved
