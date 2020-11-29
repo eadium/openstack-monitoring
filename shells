@@ -11,9 +11,10 @@ ssh -i /home/deployment/.quickstart/id_rsa_undercloud stack@192.168.23.50
 ssh -L 3000:192.168.23.50:3000 -o ProxyJump=deployment@10.100.115.110  -i /Users/artemandruhov/src/isp/stack/id_rsa_undercloud stack@192.168.23.50
 
 sudo yum install -y wget
-wget https://github.com/eadium/openstack-monitoring/raw/master/libvirt_exporter
+wget https://github.com/eadium/openstack-monitoring/raw/master/libvirt_exporter_improved
 chmod +x libvirt_exporter
-./libvirt_exporter --libvirt.export-nova-metadata --web.listen-address="0.0.0.0:9177" &
+sudo ./libvirt_exporter --libvirt.export-nova-metadata --web.listen-address="0.0.0.0:9177" &
+sudo ./libvirt_exporter_improved --web.listen-address="0.0.0.0:9177" &
 
 podman run -p 9090:9090 -dv /home/stack/monitoring:/etc/prometheus prom/prometheus
 
