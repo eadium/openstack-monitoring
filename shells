@@ -1,0 +1,19 @@
+podman run -p 9180:9180 -v "/home/stack/monitoring/clouds.yaml":/etc/openstack/clouds.yaml -d quay.io/niedbalski/openstack-exporter-linux-amd64:master overcloud
+
+-i /home/deployment/.quickstart/id_rsa_virt_host stack@192.168.23.50
+
+ssh -L 9180:192.168.23.50:9180 deployment@10.100.115.110
+
+ssh -o ProxyCommand="ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ConnectTimeout=60 -i /home/deployment/.quickstart/id_rsa_virt_host stack@127.0.0.2 -W 192.168.23.50:22" -i /home/deployment/.quickstart/id_rsa_undercloud stack@192.168.23.50
+
+ssh -i /home/deployment/.quickstart/id_rsa_undercloud stack@192.168.23.50
+
+ssh -L 3000:192.168.23.50:3000 -o ProxyJump=deployment@10.100.115.110  -i /Users/artemandruhov/src/isp/stack/id_rsa_undercloud stack@192.168.23.50
+
+sudo yum install -y wget
+wget https://github.com/eadium/openstack-monitoring/raw/master/libvirt_exporter
+chmod +x libvirt_exporter
+./libvirt_exporter --libvirt.export-nova-metadata --web.listen-address="0.0.0.0:9177" &
+
+podman run -p 9090:9090 -dv /home/stack/monitoring:/etc/prometheus prom/prometheus
+
