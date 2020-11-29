@@ -14,7 +14,8 @@ sudo yum install -y wget
 wget https://github.com/eadium/openstack-monitoring/raw/master/libvirt_exporter_improved
 chmod +x libvirt_exporter
 sudo ./libvirt_exporter --libvirt.export-nova-metadata --web.listen-address="0.0.0.0:9177" &
-sudo ./libvirt_exporter_improved --web.listen-address="0.0.0.0:9177" &
+sudo ./libvirt_exporter_improved --web.listen-address="0.0.0.0:9178" &
 
 podman run -p 9090:9090 -dv /home/stack/monitoring:/etc/prometheus prom/prometheus
 
+sudo firewall-cmd --zone=public --add-port=9178/tcp --permanent; sudo firewall-cmd --reload
