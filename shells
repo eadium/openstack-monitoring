@@ -8,7 +8,9 @@ ssh -o ProxyCommand="ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChec
 
 ssh -i /home/deployment/.quickstart/id_rsa_undercloud stack@192.168.23.50
 
-ssh -L 3000:192.168.23.50:3000 -o ProxyJump=deployment@10.100.115.110  -i /Users/artemandruhov/src/isp/stack/id_rsa_undercloud stack@192.168.23.50
+ssh -L 9090:192.168.23.50:9090 -L 3000:192.168.23.50:3000 -o ProxyJump=deployment@10.100.115.110  -i /Users/artemandruhov/src/isp/stack/id_rsa_undercloud stack@192.168.23.50
+
+ssh -J deployment@10.100.115.110 -i /Users/artemandruhov/src/isp/stack/id_rsa_undercloud stack@192.168.23.50
 
 sudo yum install -y wget
 wget https://github.com/eadium/openstack-monitoring/raw/master/libvirt_exporter_improved
@@ -19,3 +21,12 @@ sudo ./libvirt_exporter_improved --web.listen-address="0.0.0.0:9178" &
 podman run -p 9090:9090 -dv /home/stack/monitoring:/etc/prometheus prom/prometheus
 
 sudo firewall-cmd --zone=public --add-port=9178/tcp --permanent; sudo firewall-cmd --reload
+
+ssh heat-admin@192.168.24.16 "sudo ./libvirt_exporter --libvirt.export-nova-metadata --web.listen-address="0.0.0.0:$port" &"
+ssh heat-admin@192.168.24.30 "sudo ./libvirt_exporter --libvirt.export-nova-metadata --web.listen-address=0.0.0.0:$port &"
+
+port=9178
+host=192.168.24.16
+target_libvirt_exporter="      - targets: \['libvirt_exporter_host:libvirt_exporter_port'\]"
+prometheus_template=$(curl https://raw.githubusercontent.com/eadium/openstack-monitoring/master/prometheus.yml) 
+echo $prometheus_template | gsed "s/\($target_libvirt_exporter\)/\1\n\1/" | gsed "0,/libvirt_exporter_host/s//$host/" | gsed "0,/libvirt_exporter_port/s//$port/" | gsed "/$target_libvirt_exporter/d"
