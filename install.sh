@@ -35,7 +35,7 @@ for element in "${compute_nodes[@]}"; do
 done
 
 # deploying to localhost
-if [[ "$2" != "no_stack_exp" && "$3" != "no_stack_exp" && "$4" != "no_stack_exp"]]; then
+if [[ "$2" != "no_stack_exp" && "$3" != "no_stack_exp" && "$4" != "no_stack_exp" ]]; then
     echo "----- Openstack exporter deployment -----"
     podman system prune -af
     sudo cp /etc/openstack/clouds.yaml $conf_dir
@@ -44,7 +44,7 @@ if [[ "$2" != "no_stack_exp" && "$3" != "no_stack_exp" && "$4" != "no_stack_exp"
     else echo "---- Skipping openstack exporter deployment -----"
 fi
 
-if [[ "$2" != "no_prom" && "$3" != "no_prom" && "$4" != "no_prom"]]; then
+if [[ "$2" != "no_prom" && "$3" != "no_prom" && "$4" != "no_prom" ]]; then
     echo "----- Prometheus deployment -----"
     # generate prometheus.yml
     mkdir -p $conf_dir
@@ -70,7 +70,7 @@ if [[ "$2" != "no_prom" && "$3" != "no_prom" && "$4" != "no_prom"]]; then
 fi
 
 
-if [[ "$2" != "no_grafana" && "$3" != "no_grafana" && "$4" != "no_grafana"]]; then
+if [[ "$2" != "no_grafana" && "$3" != "no_grafana" && "$4" != "no_grafana" ]]; then
     echo "----- Grafana deployment -----"
     podman run -d --name=grafana -p 3000:3000 --network host --name grafana.ddk grafana/grafana
     podman ps
