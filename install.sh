@@ -19,7 +19,7 @@ fi
 IFS=', ' read -r -a compute_nodes <<<"$1"
 for element in "${compute_nodes[@]}"; do
     ssh heat-admin@${element} "
-        sudo apt install -y wget 
+        sudo yum install -y wget 
         wget https://github.com/eadium/openstack-monitoring/raw/master/libvirt_exporter
         chmod +x libvirt_exporter
         sudo ./libvirt_exporter --libvirt.export-nova-metadata --web.listen-address=0.0.0.0:${port} &
