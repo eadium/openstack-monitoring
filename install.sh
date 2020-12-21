@@ -1,7 +1,7 @@
 #!/bin/bash
 # pass ip's of compute nodes as an arg to this script 
 # ./install.sh 192.168.24.14,92.168.24.15,92.168.24.16 [no_grafana, no_prom, no_stack_exp]
-# you may also want to skip some stages with extra args: no_prom, no_stack_exp, no_grafana, not_libvirt_exp
+# you may also want to skip some stages with extra args: no_prom, no_stack_exp, no_grafana, no_libvirt_exp
 
 # config section
 libvirt_port=9178
@@ -12,7 +12,7 @@ conf_dir=/home/stack/monitoring
 
 if [ $# -eq 0 ]; then
     echo "No arguments supplied"
-    echo './install.sh 192.168.24.14,92.168.24.15,92.168.24.16 [no_grafana, no_prom, no_stack_exp, not_libvirt_exp]'
+    echo './install.sh 192.168.24.14,92.168.24.15,92.168.24.16 [no_grafana, no_prom, no_stack_exp, no_libvirt_exp]'
     exit 1
 fi
 
@@ -24,7 +24,7 @@ echo "conf_dir: $conf_dir"
 
 IFS=', ' read -r -a compute_nodes <<<"$1"
 
-if [[ "$2" != "not_libvirt_exp" && "$3" != "not_libvirt_exp" && "$4" != "not_libvirt_exp" ]]; then
+if [[ "$2" != "no_libvirt_exp" && "$3" != "no_libvirt_exp" && "$4" != "no_libvirt_exp" ]]; then
     echo "----- libvirt exporter deployment -----"
     for element in "${compute_nodes[@]}"; do
         ssh heat-admin@${element} "
