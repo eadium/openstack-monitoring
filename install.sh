@@ -77,7 +77,7 @@ fi
 
 if [[ "$2" != "no_grafana" && "$3" != "no_grafana" && "$4" != "no_grafana" ]]; then
     echo "----- Grafana deployment -----"
-    podman run -d --name=grafana -p 3000:3000 --network host --name grafana.ddk grafana/grafana
+    podman run -d --name=grafana -p 3000:3000 --network host --name grafana.ddk grafana/grafana || podman restart grafana.ddk
     podman ps
     else echo "---- Skipping Grafana deployment -----"
 fi
