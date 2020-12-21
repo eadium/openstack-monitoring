@@ -16,20 +16,26 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
+echo "libvirt_port: $libvirt_port"
+echo "openstack_exporter_port: $openstack_exporter_port"
+echo "openstack_exporter_host: $openstack_exporter_host"
+echo "prometheus_port: $prometheus_port"
+echo "conf_dir: $conf_dir"
+
 IFS=', ' read -r -a compute_nodes <<<"$1"
 for element in "${compute_nodes[@]}"; do
     ssh heat-admin@${element} "
         sudo yum install -y wget 
-        wget https://github.com/eadium/openstack-monitoring/raw/master/libvirt_exporter
+        wget -q https://github.com/eadium/openstack-monitoring/raw/master/libvirt_exporter
         chmod +x libvirt_exporter
         sudo ./libvirt_exporter --libvirt.export-nova-metadata --web.listen-address=0.0.0.0:${libvirt_port} &
-        sudo firewall-cmd --zone=public --add-port=9178/tcp --permanent; sudo firewall-cmd --reload
+        sudo firewall-cmd --zone=public --add-port=${libvirt_port}/tcp --permanent; sudo firewall-cmd --reload
     "
     curl ${element}:${libvirt_port} || echo Can\'t reach metrics at $element
 done
 
 # deploying to localhost
-if [ "$2" != "no_stack_exp" && "$3" != "no_stack_exp" && "$4" != "no_stack_exp"]; then
+if [[ "$2" != "no_stack_exp" && "$3" != "no_stack_exp" && "$4" != "no_stack_exp"]]; then
     echo "----- Openstack exporter deployment -----"
     podman system prune -af
     sudo cp /etc/openstack/clouds.yaml $conf_dir
@@ -38,7 +44,7 @@ if [ "$2" != "no_stack_exp" && "$3" != "no_stack_exp" && "$4" != "no_stack_exp"]
     else echo "---- Skipping openstack exporter deployment -----"
 fi
 
-if [ "$2" != "no_prom" && "$3" != "no_prom" && "$4" != "no_prom"]; then
+if [[ "$2" != "no_prom" && "$3" != "no_prom" && "$4" != "no_prom"]]; then
     echo "----- Prometheus deployment -----"
     # generate prometheus.yml
     mkdir -p $conf_dir
@@ -64,7 +70,7 @@ if [ "$2" != "no_prom" && "$3" != "no_prom" && "$4" != "no_prom"]; then
 fi
 
 
-if [ "$2" != "no_grafana" && "$3" != "no_grafana" && "$4" != "no_grafana"]; then
+if [[ "$2" != "no_grafana" && "$3" != "no_grafana" && "$4" != "no_grafana"]]; then
     echo "----- Grafana deployment -----"
     podman run -d --name=grafana -p 3000:3000 --network host --name grafana.ddk grafana/grafana
     podman ps
