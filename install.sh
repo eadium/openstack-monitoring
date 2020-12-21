@@ -39,7 +39,7 @@ if [[ "$2" != "no_stack_exp" && "$3" != "no_stack_exp" && "$4" != "no_stack_exp"
     echo "----- Openstack exporter deployment -----"
     podman system prune -af
     sudo cp /etc/openstack/clouds.yaml $conf_dir
-    podman run -p $openstack_exporter_port:9180 --network host --name openstack_exporter.ddk -v /home/stack/monitoring/clouds.yaml:/etc/openstack/clouds.yaml -d quay.io/niedbalski/openstack-exporter-linux-amd64:master overcloud
+    podman run -p $openstack_exporter_port:9180 --network host --name openstack_exporter.ddk -v /home/stack/monitoring/clouds.yaml:/etc/openstack/clouds.yaml -d quay.io/niedbalski/openstack-exporter-linux-amd64:master overcloud || podman restart openstack_exporter.ddk
     podman ps
     else echo "---- Skipping openstack exporter deployment -----"
 fi
@@ -64,7 +64,7 @@ if [[ "$2" != "no_prom" && "$3" != "no_prom" && "$4" != "no_prom" ]]; then
     sed -i "/$target_openstack_exporter/d" $conf_dir/prometheus.yml
     cat $conf_dir/prometheus.yml
 
-    podman run -p 9090:9090 -dv "$conf_dir:/etc/prometheus" --network host --name prom.ddk prom/prometheus
+    podman run -p 9090:9090 -dv "$conf_dir:/etc/prometheus" --network host --name prom.ddk prom/prometheus || podman restart prom.ddk
     podman ps
     else echo "---- Skipping Prometheus deployment -----"
 fi
