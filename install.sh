@@ -1,7 +1,7 @@
 #!/bin/bash
 # pass ip's of compute nodes as an arg to this script 
 # ./install.sh 192.168.24.14,92.168.24.15,92.168.24.16 [no_grafana, no_prom, no_stack_exp]
-# you may also want to skip some stages with extra args: no_prom, no_stack_exp, no_grafana
+# you may also want to skip some stages with extra args: no_prom, no_stack_exp, no_grafana, not_libvirt_exp
 
 # config section
 libvirt_port=9178
@@ -34,6 +34,7 @@ if [[ "$2" != "not_libvirt_exp" && "$3" != "not_libvirt_exp" && "$4" != "not_lib
             sudo ./libvirt_exporter --libvirt.export-nova-metadata --web.listen-address=0.0.0.0:${libvirt_port} &
             sudo firewall-cmd --zone=public --add-port=${libvirt_port}/tcp --permanent; sudo firewall-cmd --reload
         "
+        echo Pinging metrics at $element:$libvirt_port
         curl ${element}:${libvirt_port} || echo Can\'t reach metrics at $element
     done
     else echo "---- libvirt openstack exporter deployment -----"
@@ -74,11 +75,9 @@ if [[ "$2" != "no_prom" && "$3" != "no_prom" && "$4" != "no_prom" ]]; then
     else echo "---- Skipping Prometheus deployment -----"
 fi
 
-
 if [[ "$2" != "no_grafana" && "$3" != "no_grafana" && "$4" != "no_grafana" ]]; then
     echo "----- Grafana deployment -----"
     podman run -d --name=grafana -p 3000:3000 --network host --name grafana.ddk grafana/grafana
     podman ps
     else echo "---- Skipping Grafana deployment -----"
 fi
-
