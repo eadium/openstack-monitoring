@@ -1,0 +1,84 @@
+container_binary: podman
+containerized_deployment: True
+
+node_exporter_container_image: prom/node-exporter
+node_exporter_port: 9100
+
+prometheus_host: "localhost"
+prometheus_port: 9090
+openstack_exporter_host: localhost
+openstack_exporter_port: 9101
+libvirt_exporter_port: 9102
+monitoring_group_name: computes
+
+prometheus_conf_dir: /etc/prometheus/conf
+prometheus_data_dir: /etc/prometheus
+prometheus_user_id: '65534'
+prometheus_container_image: "docker.io/prom/prometheus:latest"
+prometheus_conf_overrides: {}
+
+alertmanager_container_image: "docker.io/prom/alertmanager:latest"
+alertmanager_data_dir: /var/lib/alertmanager
+alertmanager_conf_dir: /etc/alertmanager
+alertmanager_port: 9093
+alertmanager_cluster_port: 9094
+alertmanager_conf_overrides: {}
+
+grafana_server_addr: "0.0.0.0"
+grafana_port: 3000
+dashboard_protocol: http
+grafana_admin_user: admin
+# This variable must be set with a strong custom password when dashboard_enabled is True
+# grafana_admin_password: pass
+# We only need this for SSL (https) connections
+grafana_crt: ''
+grafana_key: ''
+# When using https, please fill with a hostname for which grafana_crt is valid.
+grafana_server_fqdn: ''
+grafana_container_image: "docker.io/grafana/grafana:latest"
+grafana_container_cpu_period: 100000
+grafana_container_cpu_cores: 2
+# container_memory is in GB
+grafana_container_memory: 0.5
+grafana_uid: '472'
+grafana_gid: '0'
+grafana_datasource: DS_PROMETHEUS
+grafana_dashboards_path: "/etc/grafana/dashboards"
+grafana_dashboard_version: master
+grafana_plugins:
+  - vonage-status-panel
+  - grafana-piechart-panel
+grafana_allow_embedding: True
+grafana_conf_overrides: {}
+
+dashboard_enabled: True
+# Choose http or https
+# For https, you should set dashboard.crt/key and grafana.crt/key
+# If you define the dashboard_crt and dashboard_key variables, but leave them as '',
+# then we will autogenerate a cert and keyfile
+dashboard_port: 8443
+dashboard_admin_user: admin
+dashboard_admin_user_ro: false
+# This variable must be set with a strong custom password when dashboard_enabled is True
+dashboard_admin_password: ispisp
+# We only need this for SSL (https) connections
+dashboard_crt: ''
+dashboard_key: ''
+dashboard_tls_external: false
+dashboard_grafana_api_no_ssl_verify: "{{ true if dashboard_protocol == 'https' and not grafana_crt and not grafana_key else false }}"
+dashboard_rgw_api_user_id: openstack-dashboard
+dashboard_rgw_api_admin_resource: ''
+dashboard_rgw_api_no_ssl_verify: False
+dashboard_frontend_vip: ''
+
+monitor_interface: interface
+monitor_address: x.x.x.x
+monitor_address_block: subnet
+# set to either ipv4 or ipv6, whichever your network is using
+ip_version: ipv4
+
+mon_host_v1:
+  enabled: True
+  suffix: ':6789'
+mon_host_v2:
+  suffix: ':3300'

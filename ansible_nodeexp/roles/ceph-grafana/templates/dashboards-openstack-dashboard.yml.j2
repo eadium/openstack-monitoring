@@ -1,0 +1,13 @@
+apiVersion: 1
+
+providers:
+- name: 'OpenStack Dashboard'
+  orgId: 1
+  folder: 'openstack-dashboard'
+  type: file
+  disableDeletion: false
+  updateIntervalSeconds: 30
+  editable: true
+  options:
+    path: '{{ grafana_dashboards_path }}'
+    foldersFromFilesStructure: true
