@@ -14,6 +14,21 @@
         destination_port: '9100'
         jump: ACCEPT
         comment: open port for node_exporter.
+- hosts: computes
+  tasks:
+    - import_role:
+        name: libvirt-exporter
+    - name: open port for libvirt_exporter.
+      become: true
+      iptables:
+        action: insert
+        rule_num: '1'
+        chain: INPUT
+        ctstate: NEW
+        protocol: tcp
+        destination_port: '9102'
+        jump: ACCEPT
+        comment: open port for libvirt_exporter.
 - hosts: prom_host
   tasks:
     - import_role:

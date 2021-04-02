@@ -1,6 +1,6 @@
 global:
-  scrape_interval: 3m
-  scrape_timeout: 2m
+  scrape_interval: 30s
+  scrape_timeout: 25s
 
 rule_files:
   - '/etc/prometheus/alerting/*'
@@ -15,10 +15,20 @@ scrape_configs:
       - targets: ['{{ openstack_exporter_host }}:{{ openstack_exporter_port }}']
 
   - job_name: 'libvirt'
+    scrape_timeout: 55s
+    scrape_interval: 1m
     static_configs:
       - targets: [
           {% for libvirt_exporter_host in groups[monitoring_group_name] %}
             '{{ libvirt_exporter_host }}:{{ libvirt_exporter_port }}',
+          {% endfor %}
+        ]
+
+  - job_name: 'node_exporter'
+    static_configs:
+      - targets: [
+          {% for host in groups[monitoring_group_name] %}
+            '{{ host }}:{{ node_exporter_port }}',
           {% endfor %}
         ]
 

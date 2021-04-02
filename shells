@@ -9,6 +9,7 @@ ssh -o ProxyCommand="ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChec
 ssh -i /home/deployment/.quickstart/id_rsa_undercloud stack@192.168.23.50
 
 ssh -L 9090:192.168.23.50:9090 -L 3000:192.168.23.50:3000 -o ProxyJump=deployment@10.100.115.110  -i /Users/artemandruhov/src/isp/stack/id_rsa_undercloud stack@192.168.23.50
+ssh -o ProxyJump=deployment@10.100.115.110  -i /Users/artemandruhov/src/isp/stack/id_rsa_undercloud stack@192.168.23.50
 
 ssh -J deployment@10.100.115.110 -i /Users/artemandruhov/src/isp/stack/id_rsa_undercloud stack@192.168.23.50
 
@@ -34,3 +35,12 @@ echo $prometheus_template | gsed "s/\($target_libvirt_exporter\)/\1\n\1/" | gsed
 
 
 curl https://raw.githubusercontent.com/eadium/openstack-monitoring/master/install.sh | bash -s <ip_addrs>
+
+IFS=', ' read -r -a compute_nodes <<<"$1"
+for element in "${compute_nodes[@]}"; do
+    ssh -o StrictHostKeyChecking=no heat-admin@${element} "
+        sudo systemctl restart libvirt_exporter
+    "
+done
+
+overcloud-novacomputeiha-0.ctlplane,overcloud-novacomputeiha-1.ctlplane,overcloud-novacomputeiha-2.ctlplane,overcloud-novacomputeiha-3.ctlplane

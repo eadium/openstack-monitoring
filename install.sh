@@ -37,7 +37,7 @@ if [[ "$2" != "no_libvirt_exp" && "$3" != "no_libvirt_exp" && "$4" != "no_libvir
         echo Pinging metrics at $element:$libvirt_port
         curl ${element}:${libvirt_port} || echo Can\'t reach metrics at $element
     done
-    else echo "---- libvirt openstack exporter deployment -----"
+    else echo "---- skipping libvirt exporter deployment -----"
 fi
 
 # deploying to localhost
