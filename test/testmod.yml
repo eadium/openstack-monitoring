@@ -1,0 +1,7 @@
+- name: test my new module
+  hosts: localhost
+  tasks:
+  - name: install package
+    dnf:
+      name: bash
+      

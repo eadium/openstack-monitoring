@@ -1,0 +1,13 @@
+---
+- name: create target directory
+  file: 
+    path: /etc/openstack_exporter/
+    state: directory
+    mode: 0755
+
+- name: copy openstack config
+  copy:
+    src: "{{ openstack_conf_path }}"
+    dest: /etc/openstack_exporter/clouds.yml
+    mode: '0644'
+    force: yes

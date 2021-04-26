@@ -2,9 +2,12 @@
 - name: include_tasks systemd.yml
   include_tasks: systemd.yml
 
-- name: start the libvirt_exporter service
+- name: include_tasks configure_exporter.yml
+  include_tasks: configure_exporter.yml
+
+- name: start the openstack_exporter service
   systemd:
-    name: libvirt_exporter
+    name: openstack_exporter
     state: started
     enabled: yes
     daemon_reload: yes

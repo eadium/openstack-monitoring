@@ -16,7 +16,7 @@
   "editable": true,
   "gnetId": 13131,
   "graphTooltip": 0,
-  "iteration": 1617361620946,
+  "iteration": 1617361973627,
   "links": [],
   "panels": [
     {
@@ -302,7 +302,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "libvirt_domain_info_meta{project_name=~\"$project_name\", host=~\"$compute_node\", instanceId=~\"$instance_id\"}",
+          "expr": "libvirt_domain_info_meta{project_name=~\"$project_name\", instance=~\"$compute_node\", domain=~\"$instance_id\"}",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -384,7 +384,7 @@
       "pluginVersion": "7.5.1",
       "targets": [
         {
-          "expr": "sum(libvirt_domain_info_maximum_memory_bytes{host=~\"$compute_node\",instanceId=~\"$instance_id\",job=~\"libvirt\"})",
+          "expr": "sum(libvirt_domain_info_maximum_memory_bytes{instance=~\"$compute_node\",domain=~\"$instance_id\",job=~\"libvirt\"})",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -442,7 +442,7 @@
       "pluginVersion": "7.5.1",
       "targets": [
         {
-          "expr": "sum(libvirt_domain_info_virtual_cpus{host=~\"$compute_node\",instanceId=~\"$instance_id\",job=~\"libvirt\"})",
+          "expr": "sum(libvirt_domain_info_virtual_cpus{instance=~\"$compute_node\",domain=~\"$instance_id\",job=~\"libvirt\"})",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -505,12 +505,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(libvirt_domain_info_cpu_time_seconds_total{host=~\"$compute_node\",instanceId=~\"$instance_id\",job=~\"libvirt\"}[5m])",
+          "expr": "irate(libvirt_domain_info_cpu_time_seconds_total{instance=~\"$compute_node\",domain=~\"$instance_id\",job=~\"libvirt\"}[5m])",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "cpu : {{name}}",
+          "legendFormat": "cpu : {{domain}}",
           "refId": "A"
         }
       ],
@@ -609,12 +609,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "libvirt_domain_info_memory_usage_bytes{host=~\"$compute_node\",instanceId=~\"$instance_id\",job=~\"libvirt\"}",
+          "expr": "libvirt_domain_info_memory_usage_bytes{instance=~\"$compute_node\",domain=~\"$instance_id\",job=~\"libvirt\"}",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "memory_usage_bytes : {{name}}",
+          "legendFormat": "memory_usage_bytes : {{domain}}",
           "refId": "A"
         }
       ],
@@ -710,7 +710,7 @@
       "pluginVersion": "7.5.1",
       "targets": [
         {
-          "expr": "sum(libvirt_domain_info_memory_usage_bytes{host=~\"$compute_node\",instanceId=~\"$instance_id\",job=~\"libvirt\"})",
+          "expr": "sum(libvirt_domain_info_memory_usage_bytes{instance=~\"$compute_node\",domain=~\"$instance_id\",job=~\"libvirt\"})",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -788,21 +788,21 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(libvirt_domain_block_stats_read_bytes_total{host=~\"$compute_node\",instanceId=~\"$instance_id\",job=~\"libvirt\"}[5m])",
+          "expr": "irate(libvirt_domain_block_stats_read_bytes_total{instance=~\"$compute_node\",domain=~\"$instance_id\",job=~\"libvirt\"}[5m])",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "Read : {{name}}",
+          "legendFormat": "Read : {{domain}}",
           "refId": "A"
         },
         {
-          "expr": "irate(libvirt_domain_block_stats_write_bytes_total{host=~\"$compute_node\",instanceId=~\"$instance_id\",job=~\"libvirt\"}[5m])",
+          "expr": "irate(libvirt_domain_block_stats_write_bytes_total{instance=~\"$compute_node\",domain=~\"$instance_id\",job=~\"libvirt\"}[5m])",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "Write : {{name}}",
+          "legendFormat": "Write : {{domain}}",
           "refId": "B"
         }
       ],
@@ -899,21 +899,21 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(libvirt_domain_block_stats_read_requests_total{host=~\"$compute_node\",instanceId=~\"$instance_id\",job=~\"libvirt\"}[5m])",
+          "expr": "irate(libvirt_domain_block_stats_read_requests_total{instance=~\"$compute_node\",domain=~\"$instance_id\",job=~\"libvirt\"}[5m])",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "Read Requests : {{name}}",
+          "legendFormat": "Read Requests : {{domain}}",
           "refId": "A"
         },
         {
-          "expr": "irate(libvirt_domain_block_stats_write_requests_total{host=~\"$compute_node\",instanceId=~\"$instance_id\",job=~\"libvirt\"}[5m])",
+          "expr": "irate(libvirt_domain_block_stats_write_requests_total{instance=~\"$compute_node\",domain=~\"$instance_id\",job=~\"libvirt\"}[5m])",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "Write  Requests : {{name}}",
+          "legendFormat": "Write  Requests : {{domain}}",
           "refId": "B"
         }
       ],
@@ -1024,18 +1024,18 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(libvirt_domain_interface_stats_receive_bytes_total{host=~\"$compute_node\",instanceId=~\"$instance_id\",job=~\"libvirt\"} [5m])",
+          "expr": "irate(libvirt_domain_interface_stats_receive_bytes_total{instance=~\"$compute_node\",domain=~\"$instance_id\",job=~\"libvirt\"} [5m])",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "RX : {{name}}",
+          "legendFormat": "RX : {{domain}}",
           "refId": "A"
         },
         {
-          "expr": "irate(libvirt_domain_interface_stats_transmit_bytes_total{host=~\"$compute_node\",instanceId=~\"$instance_id\",job=~\"libvirt\"} [5m])",
+          "expr": "irate(libvirt_domain_interface_stats_transmit_bytes_total{instance=~\"$compute_node\",domain=~\"$instance_id\",job=~\"libvirt\"} [5m])",
           "interval": "",
-          "legendFormat": "TX : {{name}}",
+          "legendFormat": "TX : {{domain}}",
           "refId": "B"
         }
       ],
@@ -1132,18 +1132,18 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(libvirt_domain_interface_stats_receive_packets_total{host=~\"$compute_node\",instanceId=~\"$instance_id\",job=~\"libvirt\"} [5m])",
+          "expr": "irate(libvirt_domain_interface_stats_receive_packets_total{instance=~\"$compute_node\",domain=~\"$instance_id\",job=~\"libvirt\"} [5m])",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "RX Packets : {{name}}",
+          "legendFormat": "RX Packets : {{domain}}",
           "refId": "A"
         },
         {
-          "expr": "irate(libvirt_domain_interface_stats_transmit_packets_total{host=~\"$compute_node\",instanceId=~\"$instance_id\",job=~\"libvirt\"} [5m])",
+          "expr": "irate(libvirt_domain_interface_stats_transmit_packets_total{instance=~\"$compute_node\",domain=~\"$instance_id\",job=~\"libvirt\"} [5m])",
           "interval": "",
-          "legendFormat": "TX Packets : {{name}}",
+          "legendFormat": "TX Packets : {{domain}}",
           "refId": "B"
         }
       ],
@@ -1242,33 +1242,33 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(libvirt_domain_interface_stats_receive_drops_total{host=~\"$compute_node\",instanceId=~\"$instance_id\",job=~\"libvirt\"} [5m])",
+          "expr": "irate(libvirt_domain_interface_stats_receive_drops_total{instance=~\"$compute_node\",domain=~\"$instance_id\",job=~\"libvirt\"} [5m])",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "RX Drop : {{name}}",
+          "legendFormat": "RX Drop : {{domain}}",
           "refId": "A"
         },
         {
-          "expr": "irate(libvirt_domain_interface_stats_transmit_drops_total{host=~\"$compute_node\",instanceId=~\"$instance_id\",job=~\"libvirt\"} [5m])",
+          "expr": "irate(libvirt_domain_interface_stats_transmit_drops_total{instance=~\"$compute_node\",domain=~\"$instance_id\",job=~\"libvirt\"} [5m])",
           "interval": "",
-          "legendFormat": "TX Drop : {{name}}",
+          "legendFormat": "TX Drop : {{domain}}",
           "refId": "C"
         },
         {
-          "expr": "irate(libvirt_domain_interface_stats_receive_errors_total{host=~\"$compute_node\",instanceId=~\"$instance_id\",job=~\"libvirt\"} [5m])",
+          "expr": "irate(libvirt_domain_interface_stats_receive_errors_total{instance=~\"$compute_node\",domain=~\"$instance_id\",job=~\"libvirt\"} [5m])",
           "format": "time_series",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "RX Error : {{name}}",
+          "legendFormat": "RX Error : {{domain}}",
           "refId": "D"
         },
         {
-          "expr": "irate(libvirt_domain_interface_stats_transmit_errors_total{host=~\"$compute_node\",instanceId=~\"$instance_id\"} [5m])",
+          "expr": "irate(libvirt_domain_interface_stats_transmit_errors_total{instance=~\"$compute_node\",domain=~\"$instance_id\"} [5m])",
           "interval": "",
-          "legendFormat": "TX Error : {{name}}",
+          "legendFormat": "TX Error : {{domain}}",
           "refId": "B"
         }
       ],
@@ -1344,7 +1344,7 @@
         "options": [],
         "query": {
           "query": "label_values(project_name)",
-          "refId": "DS_PROMETHEUS-project_name-Variable-Query"
+          "refId": "StandardVariableQuery"
         },
         "refresh": 1,
         "regex": "",
@@ -1359,12 +1359,12 @@
       {
         "allValue": null,
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
         "datasource": "DS_PROMETHEUS",
-        "definition": "label_values(libvirt_domain_info_memory_usage_bytes{projectName=\"$project_name\"}, host)",
+        "definition": "label_values(libvirt_domain_info_meta{project_name=\"$project_name\"}, instance)",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1374,8 +1374,8 @@
         "name": "compute_node",
         "options": [],
         "query": {
-          "query": "label_values(libvirt_domain_info_memory_usage_bytes{projectName=\"$project_name\"}, host)",
-          "refId": "DS_PROMETHEUS-compute_node-Variable-Query"
+          "query": "label_values(libvirt_domain_info_meta{project_name=\"$project_name\"}, instance)",
+          "refId": "StandardVariableQuery"
         },
         "refresh": 1,
         "regex": "",
@@ -1395,7 +1395,7 @@
           "value": "$__all"
         },
         "datasource": "DS_PROMETHEUS",
-        "definition": "label_values(libvirt_domain_info_memory_usage_bytes{projectName=\"$project_name\",host=~\"$compute_node\"}, instanceId)",
+        "definition": "label_values(libvirt_domain_info_meta{project_name=\"$project_name\",instance=~\"$compute_node\"}, domain)",
         "description": null,
         "error": null,
         "hide": 0,
@@ -1405,8 +1405,8 @@
         "name": "instance_id",
         "options": [],
         "query": {
-          "query": "label_values(libvirt_domain_info_memory_usage_bytes{projectName=\"$project_name\",host=~\"$compute_node\"}, instanceId)",
-          "refId": "DS_PROMETHEUS-instance_id-Variable-Query"
+          "query": "label_values(libvirt_domain_info_meta{project_name=\"$project_name\",instance=~\"$compute_node\"}, domain)",
+          "refId": "StandardVariableQuery"
         },
         "refresh": 1,
         "regex": "",
@@ -1440,5 +1440,5 @@
   "timezone": "",
   "title": "Libvirt Dashboard",
   "uid": "242K89ZMa",
-  "version": 2
+  "version": 3
 }

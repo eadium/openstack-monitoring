@@ -1,16 +1,19 @@
 container_binary: podman
 containerized_deployment: True
+monitoring_group_name: computes
 
 node_exporter_container_image: docker.io/prom/node-exporter
 node_exporter_port: 9100
 
-prometheus_host: "localhost"
+prometheus_host: "{{ hostvars[prom_host].ansible_ssh_host }}"
 prometheus_port: 9090
-openstack_exporter_host: localhost
+openstack_exporter_host:  "{{ hostvars[openstack_exporter_host].ansible_ssh_host }}"
 openstack_exporter_port: 9101
+openstack_conf_path: /home/stack/monitoring/clouds.yaml
+openstack_exporter_target: overcloud
+openstack_exporter_container_image: quay.io/niedbalski/openstack-exporter-linux-amd64:master
 libvirt_exporter_port: 9102
 libvirt_exporter_container_image: docker.io/eadium/libvirt_exporter:latest
-monitoring_group_name: computes
 
 prometheus_conf_dir: /etc/prometheus/conf
 prometheus_data_dir: /etc/prometheus
